@@ -146,7 +146,7 @@ Because trained PyTorch model checkpoints exceed GitHub's single-file upload thr
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/lungguard.git
+git clone https://github.com/Ishan-oza/LungGuard
 cd lungguard
 
 # 2. Create and activate a virtual environment
@@ -165,7 +165,7 @@ python3 download_models.py
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/lungguard.git
+git clone https://github.com/Ishan-oza/LungGuard
 cd lungguard
 
 # 2. Create and activate a virtual environment
@@ -184,7 +184,7 @@ python3 download_models.py
 
 ```powershell
 # 1. Clone the repository
-git clone https://github.com/your-username/lungguard.git
+git clone https://github.com/Ishan-oza/LungGuard
 cd lungguard
 
 # 2. Create and activate a virtual environment
