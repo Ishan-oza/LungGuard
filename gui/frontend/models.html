@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Models · LungGuard</title>
+  <meta name="description" content="Technical specifications of the four neural network architectures in the LungGuard ensemble.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css?v=20261126">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="wrap">
+      <a class="logo" href="index.html?v=20261126" aria-label="LungGuard Home">
+        <img src="assets/logo.svg" alt="LungGuard">
+        <span>LungGuard</span>
+      </a>
+      <ul>
+        <li><a class="l" href="index.html?v=20261126">Overview</a></li>
+        <li><a class="l" href="analyze.html?v=20261126">Analyze</a></li>
+        <li><a class="l on" href="models.html?v=20261126">Models</a></li>
+        <li><a class="l" href="results.html?v=20261126">Results</a></li>
+        <li><a class="l" href="method.html?v=20261126">Method</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="page-h">
+        <h1>Backbone Architectures</h1>
+        <p class="lead">Four structurally diverse convolutional networks fine-tuned via transfer learning with custom three-class classification heads.</p>
+      </div>
+
+      <!-- Models List Container -->
+      <section style="padding-top:2rem;">
+        <div id="model-rows"></div>
+      </section>
+
+      <!-- Training Hyperparameters -->
+      <section class="split">
+        <div>
+          <h2>Training Hyperparameters & Environment</h2>
+          <p>Standardized transfer learning protocol applied identically across all four networks to guarantee fair empirical comparison.</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Setting / Hyperparameter</th>
+              <th>Configuration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Initialization</td><td>ImageNet-1K Pretrained Weights</td></tr>
+            <tr><td>Optimizer</td><td>Adam (Learning Rate = 1e-4)</td></tr>
+            <tr><td>Loss Criterion</td><td>Categorical Cross-Entropy</td></tr>
+            <tr><td>Epochs & Checkpointing</td><td>5 Epochs (Saving Best Validation Model)</td></tr>
+            <tr><td>Batch Size</td><td>32 Images per Batch</td></tr>
+            <tr><td>Data Split</td><td>Stratified 80% Train / 20% Validation Split</td></tr>
+            <tr><td>Input Dimensions</td><td>224 × 224 px (240 × 240 px for EfficientNet-B1 standalone)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Loss Curves -->
+      <section>
+        <h2>Convergence & Loss Curves</h2>
+        <p class="mute" style="margin-bottom:1.5rem;">Training vs. validation loss per epoch for each individual architecture.</p>
+        
+        <div class="tabs" data-panels=".lc" role="tablist">
+          <button role="tab" data-tab="lc-resnet50" aria-selected="true">ResNet50</button>
+          <button role="tab" data-tab="lc-vgg19" aria-selected="false">VGG19</button>
+          <button role="tab" data-tab="lc-efficientnet_b1" aria-selected="false">EfficientNet-B1</button>
+          <button role="tab" data-tab="lc-mobilenet_v2" aria-selected="false">MobileNetV2</button>
+        </div>
+
+        <figure class="lc" id="lc-resnet50" style="max-width:620px;">
+          <img src="assets/plots/resnet50_loss.png" alt="ResNet50 Training & Validation Loss">
+          <figcaption>ResNet50 Training and Validation Loss Progression</figcaption>
+        </figure>
+        <figure class="lc" id="lc-vgg19" hidden style="max-width:620px;">
+          <img src="assets/plots/vgg19_loss.png" alt="VGG19 Training & Validation Loss">
+          <figcaption>VGG19 Training and Validation Loss Progression</figcaption>
+        </figure>
+        <figure class="lc" id="lc-efficientnet_b1" hidden style="max-width:620px;">
+          <img src="assets/plots/efficientnet_b1_loss.png" alt="EfficientNet-B1 Training & Validation Loss">
+          <figcaption>EfficientNet-B1 Training and Validation Loss Progression</figcaption>
+        </figure>
+        <figure class="lc" id="lc-mobilenet_v2" hidden style="max-width:620px;">
+          <img src="assets/plots/mobilenet_v2_loss.png" alt="MobileNetV2 Training & Validation Loss">
+          <figcaption>MobileNetV2 Training and Validation Loss Progression</figcaption>
+        </figure>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><b>LungGuard</b> · Deep Learning Chest Radiograph Multi-Class Classification System</p>
+      <p>Research prototype only. Not a medical device.</p>
+    </div>
+  </footer>
+
+  <script src="assets/app.js?v=20261126"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+Ensemble Accuracy: 94.97%
+
+              precision    recall  f1-score   support
+
+     COVID19       0.88      0.97      0.92       332
+      NORMAL       0.97      0.94      0.95       529
+   PNEUMONIA       0.97      0.95      0.96      1068
+
+    accuracy                           0.95      1929
+   macro avg       0.94      0.95      0.94      1929
+weighted avg       0.95      0.95      0.95      1929
+
+
+AUC Scores per Class:
+COVID19: 0.995
+NORMAL: 0.996
+PNEUMONIA: 0.990

@@ -1,0 +1,8 @@
+{"test_size":1929,"classes":["COVID-19","Normal","Pneumonia"],"support":[332,529,1068],
+"ensemble":{"accuracy":94.97,"precision":[0.88,0.97,0.97],"recall":[0.97,0.94,0.95],"f1":[0.92,0.95,0.96],"auc":[0.995,0.996,0.990],
+ "confusion":[[323,6,3],[0,497,32],[45,11,1012]]},
+"models":{
+ "resnet50":{"name":"ResNet50","accuracy":94.87,"macro_auc":0.9946,"params":"25.6M","weight":0.5,"confusion":[[321,5,6],[1,490,38],[37,12,1019]]},
+ "vgg19":{"name":"VGG19","accuracy":92.43,"macro_auc":0.9810,"params":"143.7M","weight":0.3,"confusion":[[282,30,20],[0,492,37],[40,19,1009]]},
+ "efficientnet_b1":{"name":"EfficientNet-B1","accuracy":92.28,"macro_auc":0.9856,"params":"7.8M","weight":0.1,"confusion":[[296,8,28],[0,501,28],[63,22,983]]},
+ "mobilenet_v2":{"name":"MobileNetV2","accuracy":89.48,"macro_auc":0.9808,"params":"3.5M","weight":0.1,"confusion":[[307,19,6],[0,495,34],[120,24,924]]}}}

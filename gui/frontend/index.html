@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LungGuard · AI-Assisted Chest Radiograph Classification</title>
+  <meta name="description" content="Four deep neural networks vote on chest radiographs for multi-class differential diagnosis.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css?v=20261126">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+<body>
+
+  <!-- Navigation (Without active status mark as requested) -->
+  <nav>
+    <div class="wrap">
+      <a class="logo" href="index.html?v=20261126" aria-label="LungGuard Home">
+        <img src="assets/logo.svg" alt="LungGuard">
+        <span>LungGuard</span>
+      </a>
+      <ul>
+        <li><a class="l on" href="index.html?v=20261126">Overview</a></li>
+        <li><a class="l" href="analyze.html?v=20261126">Analyze</a></li>
+        <li><a class="l" href="models.html?v=20261126">Models</a></li>
+        <li><a class="l" href="results.html?v=20261126">Results</a></li>
+        <li><a class="l" href="method.html?v=20261126">Method</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <!-- Hero Section (Spacious & Wide) -->
+      <div class="hero">
+        <div>
+          <h1>Four networks read the same X‑ray. Then they vote.</h1>
+          <p class="lead">
+            Upload a chest X-ray and ResNet50, VGG19, EfficientNet-B1, and MobileNetV2 each evaluate the scan independently. A weighted consensus determines COVID-19, Pneumonia, or Normal, accompanied by a pulmonary attention heatmap.
+          </p>
+          <div class="acts">
+            <a class="btn" href="analyze.html?v=20261126">Analyze an X-ray</a>
+            <a class="btn alt" href="results.html?v=20261126">See the results</a>
+          </div>
+        </div>
+
+        <!-- Scanner Card in Day Theme -->
+        <div class="scanner">
+          <svg viewBox="0 0 400 460" role="img" aria-label="Authentic thoracic chest radiograph simulation">
+            <defs>
+              <!-- Radiographic Soft Field Shading -->
+              <radialGradient id="lung-l" cx="45%" cy="50%" r="55%">
+                <stop offset="0%" stop-color="#2D1F18"/>
+                <stop offset="55%" stop-color="#1A110C"/>
+                <stop offset="100%" stop-color="#120B08"/>
+              </radialGradient>
+              <radialGradient id="lung-r" cx="55%" cy="50%" r="55%">
+                <stop offset="0%" stop-color="#2D1F18"/>
+                <stop offset="55%" stop-color="#1A110C"/>
+                <stop offset="100%" stop-color="#120B08"/>
+              </radialGradient>
+              <linearGradient id="cardiac-shadow" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#4E362C" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#2E1F18" stop-opacity="0.6"/>
+              </linearGradient>
+              <linearGradient id="scan-laser" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#B08401" stop-opacity="0"/>
+                <stop offset="70%" stop-color="#D49E8D" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#B08401" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Radiograph Dark Plate Frame -->
+            <rect width="400" height="460" rx="10" fill="#140D09"/>
+            <rect x="2" y="2" width="396" height="456" rx="9" fill="none" stroke="#3A251C" stroke-width="1.5"/>
+
+            <!-- Subtle Film Coordinate Grid -->
+            <path d="M20 230 h360 M200 20 v420" stroke="#261710" stroke-width="1" stroke-dasharray="4 6"/>
+            
+            <!-- Anatomical Left & Right Lung Radiolucent Cavities -->
+            <!-- Right Lung (Patient Right = Left on screen) -->
+            <path d="M182 92 C145 92 100 120 78 180 C60 230 62 315 76 372 C88 385 130 388 178 375 C184 365 186 280 184 190 Z" fill="url(#lung-l)" stroke="#3E2A20" stroke-width="1.2"/>
+            <!-- Left Lung (Patient Left = Right on screen, with cardiac notch) -->
+            <path d="M218 92 C255 92 300 120 322 180 C340 230 338 315 324 372 C312 385 270 388 238 376 C220 360 216 310 216 260 C216 215 217 145 218 92 Z" fill="url(#lung-r)" stroke="#3E2A20" stroke-width="1.2"/>
+
+            <!-- Cardiac Silhouette & Aortic Arch (Light Radiopaque Density) -->
+            <path d="M195 155 C215 150 230 162 232 180 C234 205 215 220 220 250 C226 285 245 325 210 365 C185 365 170 340 168 310 C165 270 175 220 185 190 Z" fill="url(#cardiac-shadow)"/>
+
+            <!-- Diaphragmatic Domes -->
+            <path d="M68 378 Q125 350 184 374" fill="none" stroke="#684A3B" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M220 376 Q275 355 332 378" fill="none" stroke="#684A3B" stroke-width="2.5" stroke-linecap="round"/>
+
+            <!-- Spine / Vertebral Column -->
+            <g opacity="0.65">
+              <rect x="193" y="45" width="14" height="375" rx="4" fill="#583E32"/>
+              <line x1="193" y1="75" x2="207" y2="75" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="105" x2="207" y2="105" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="135" x2="207" y2="135" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="165" x2="207" y2="165" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="195" x2="207" y2="195" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="225" x2="207" y2="225" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="255" x2="207" y2="255" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="285" x2="207" y2="285" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="315" x2="207" y2="315" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="345" x2="207" y2="345" stroke="#1E140F" stroke-width="2"/>
+              <line x1="193" y1="375" x2="207" y2="375" stroke="#1E140F" stroke-width="2"/>
+            </g>
+
+            <!-- Trachea & Main Bronchial Tree -->
+            <g stroke="#FAF6F2" stroke-linecap="round" opacity="0.75" fill="none">
+              <line x1="200" y1="48" x2="200" y2="148" stroke-width="4"/>
+              <path d="M200 148 C190 162 170 178 145 192" stroke-width="2.5"/>
+              <path d="M200 148 C210 162 230 180 255 195" stroke-width="2.5"/>
+              <path d="M152 188 C135 205 125 240 120 280 M152 188 C140 215 138 250 142 295" stroke-width="1.2" opacity="0.6"/>
+              <path d="M248 191 C265 210 272 245 278 285 M248 191 C260 220 260 255 255 295" stroke-width="1.2" opacity="0.6"/>
+            </g>
+
+            <!-- Clavicles (Collar Bones) -->
+            <g stroke="#8A6754" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8">
+              <path d="M195 90 C155 82 105 84 55 110"/>
+              <path d="M205 90 C245 82 295 84 345 110"/>
+            </g>
+
+            <!-- Anatomical Rib Cage (Curved Posterior Ribs) -->
+            <g fill="none" stroke="#684A3B" stroke-width="3.5" stroke-linecap="round" opacity="0.65">
+              <path d="M192 118 C140 102 90 122 65 152"/>
+              <path d="M208 118 C260 102 310 122 335 152"/>
+              
+              <path d="M192 152 C135 138 82 165 58 202"/>
+              <path d="M208 152 C265 138 318 165 342 202"/>
+              
+              <path d="M192 190 C130 178 78 210 55 254"/>
+              <path d="M208 190 C270 178 322 210 345 254"/>
+              
+              <path d="M192 232 C128 222 75 258 55 308"/>
+              <path d="M208 232 C272 222 325 258 345 308"/>
+              
+              <path d="M192 278 C128 270 78 310 60 360"/>
+              <path d="M208 278 C272 270 322 310 340 360"/>
+              
+              <path d="M192 325 C132 320 85 355 72 388"/>
+              <path d="M208 325 C268 320 315 355 328 388"/>
+            </g>
+
+            <!-- Subtle Scanning Laser Line -->
+            <g class="hero-beam">
+              <rect x="10" y="210" width="380" height="20" fill="url(#scan-laser)"/>
+              <line x1="10" y1="230" x2="390" y2="230" stroke="#FAF6F2" stroke-width="1.5" filter="drop-shadow(0 0 3px #B08401)"/>
+            </g>
+
+            <!-- Radiologist Coordinate Crosshairs -->
+            <g stroke="#B08401" stroke-width="1.2" opacity="0.75">
+              <circle cx="130" cy="245" r="14" fill="none" stroke-dasharray="2 3"/>
+              <line x1="123" y1="245" x2="137" y2="245"/>
+              <line x1="130" y1="238" x2="130" y2="252"/>
+              
+              <circle cx="270" cy="245" r="14" fill="none" stroke-dasharray="2 3"/>
+              <line x1="263" y1="245" x2="277" y2="245"/>
+              <line x1="270" y1="238" x2="270" y2="252"/>
+            </g>
+
+            <!-- Radiograph Orientation Marker 'R' -->
+            <text x="355" y="45" font-family="'Soria', Georgia, serif" font-size="18" font-weight="bold" fill="#FAF6F2" opacity="0.6">R</text>
+          </svg>
+
+          <!-- Model Chips -->
+          <div class="chip" style="left:-1.5rem; top:16%;">ResNet50 <b>×0.50</b></div>
+          <div class="chip" style="right:-1.2rem; top:30%;">VGG19 <b>×0.30</b></div>
+          <div class="chip" style="left:-1rem; bottom:26%;">EfficientNet-B1 <b>×0.10</b></div>
+          <div class="chip" style="right:-1.5rem; bottom:14%;">MobileNetV2 <b>×0.10</b></div>
+          <div class="verdict">Weighted Consensus · 94.97% Accuracy</div>
+        </div>
+      </div>
+
+      <!-- Wide KPI Stats Grid -->
+      <div class="stats">
+        <div class="stat">
+          <strong data-count="94.97">94.97%</strong>
+          <p>Ensemble accuracy on the 1,929 patient test cohort</p>
+        </div>
+        <div class="stat">
+          <strong data-count="0.994">0.994</strong>
+          <p>Macro-averaged Area Under the ROC Curve across all conditions</p>
+        </div>
+        <div class="stat">
+          <strong data-count="1929">1,929</strong>
+          <p>Unseen patient X-rays evaluated with zero training overlap</p>
+        </div>
+      </div>
+
+      <!-- Workflow Steps Section -->
+      <section>
+        <h2>From upload to verdict in seconds</h2>
+        <div class="flow">
+          <div class="step">
+            <div class="n">1</div>
+            <h3>Upload Radiograph</h3>
+            <p>Upload a standard PA chest X-ray. Preprocessing and inference execute entirely in local memory.</p>
+          </div>
+          <div class="step">
+            <div class="n">2</div>
+            <h3>Multi-Backbone Forward Pass</h3>
+            <p>Four distinct neural networks compute independent class probability distributions.</p>
+          </div>
+          <div class="step">
+            <div class="n">3</div>
+            <h3>Soft-Voting Consensus</h3>
+            <p>Probabilities are combined via optimal weights (0.50, 0.30, 0.10, 0.10) to yield the final verdict.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture Features -->
+      <section>
+        <div class="feats">
+          <div class="feat">
+            <div class="ico">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg>
+            </div>
+            <h3>Grad-CAM Attention Maps</h3>
+            <p>ResNet50 activation mapping visually localizes opacities and pulmonary infiltrates that influenced the decision.</p>
+          </div>
+          <div class="feat">
+            <div class="ico">
+              <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>
+            </div>
+            <h3>Transparent Model Voting</h3>
+            <p>Inspect each individual network's vote side-by-side with the final consensus, highlighting any diagnostic ambiguity.</p>
+          </div>
+          <div class="feat">
+            <div class="ico">
+              <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            </div>
+            <h3>Local Privacy & Speed</h3>
+            <p>Everything runs on your local machine using PyTorch. Radiographs are never stored, logged, or sent to cloud servers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Weight Distribution Breakdown -->
+      <section class="split">
+        <div>
+          <h2>Why an ensemble?</h2>
+          <p>
+            Individual architectures possess distinct inductive biases: ResNet50 provides deep residual representations, VGG19 stabilizes spatial textures, and EfficientNet & MobileNet calibrate fine boundaries. Averaging their probabilities prevents individual failure modes.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Ensemble Simplex Weight Distribution</h3>
+          <div class="wbar">
+            <div style="flex:50; background:#683B2B;">ResNet50 · 0.50</div>
+            <div style="flex:30; background:#B08401;">VGG19 · 0.30</div>
+            <div style="flex:10; background:#D49E8D; color:#3D2218; padding:0; justify-content:center;">0.10</div>
+            <div style="flex:10; background:#DED1BD; color:#3D2218; padding:0; justify-content:center;">0.10</div>
+          </div>
+          <p class="mute" style="font-size:0.95rem; margin-top:0.75rem;">
+            Weights were determined via systematic grid search across the probability simplex to maximize test accuracy.
+          </p>
+        </div>
+      </section>
+
+      <!-- Call to Action Card -->
+      <div class="cta">
+        <h2>Ready to test a radiograph?</h2>
+        <p class="mute">Upload an X-ray to see the multi-class prediction and Grad-CAM heatmap in real-time.</p>
+        <a class="btn" href="analyze.html?v=20261126">Open Diagnostic Analyzer</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><b>LungGuard</b> · Deep Learning Chest Radiograph Multi-Class Classification System</p>
+      <p>Research prototype only. Not a medical device.</p>
+    </div>
+  </footer>
+
+  <script src="assets/app.js?v=20261126"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Method · LungGuard</title>
+  <meta name="description" content="Technical pipeline, consensus formulation, and developer REST API for LungGuard.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css?v=20261126">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="wrap">
+      <a class="logo" href="index.html?v=20261126" aria-label="LungGuard Home">
+        <img src="assets/logo.svg" alt="LungGuard">
+        <span>LungGuard</span>
+      </a>
+      <ul>
+        <li><a class="l" href="index.html?v=20261126">Overview</a></li>
+        <li><a class="l" href="analyze.html?v=20261126">Analyze</a></li>
+        <li><a class="l" href="models.html?v=20261126">Models</a></li>
+        <li><a class="l" href="results.html?v=20261126">Results</a></li>
+        <li><a class="l on" href="method.html?v=20261126">Method</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="page-h">
+        <h1>Methodology & Architecture</h1>
+        <p class="lead">Data processing pipeline, soft-voting ensemble formulation, and REST API specification.</p>
+      </div>
+
+      <!-- Pipeline Steps -->
+      <section class="split">
+        <div>
+          <h2>Diagnostic Pipeline</h2>
+          <p>Each radiograph passes through five automated stages from client upload to final explainable diagnosis.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <div>
+              <h3>Input Verification</h3>
+              <p>The server decodes the radiograph in RAM, validating dimensions, formatting, and color saturation to reject corrupted or non-radiographic uploads.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Tensor Standardization</h3>
+              <p>Converted to RGB, resized using bilinear interpolation (224×224 / 240×240), and normalized with ImageNet mean and standard deviation.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Multi-Model Forward Passes</h3>
+              <p>ResNet50, VGG19, EfficientNet-B1, and MobileNetV2 each compute raw class logit distributions.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Simplex Weighted Soft-Voting</h3>
+              <p>Softmax probabilities are weighted (0.50, 0.30, 0.10, 0.10) to determine the top consensus condition.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Grad-CAM Attention Heatmap</h3>
+              <p>Gradients hooked to ResNet50's final residual block build the pulmonary activation map for anatomical verification.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- REST API -->
+      <section class="split">
+        <div>
+          <h2>Developer REST API</h2>
+          <p>LungGuard provides a high-performance FastAPI service ready for programmatic integration into hospital PACS or research pipelines.</p>
+        </div>
+        <div style="display:grid; gap:1.5rem;">
+          <pre><button class="cp btn sm alt">Copy</button>curl -X POST "http://localhost:8000/api/predict" \
+     -F "file=@chest_xray.png" \
+     -F "model=ensemble" \
+     -F "explain=true"</pre>
+          <table>
+            <thead>
+              <tr>
+                <th>Method & Endpoint</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>POST /api/predict</code></td>
+                <td>Run multi-class inference on an uploaded image. Returns probabilities, consensus, model breakdown, and Grad-CAM data URI.</td>
+              </tr>
+              <tr>
+                <td><code>GET /api/health</code></td>
+                <td>Health check reporting loaded models, active hardware device (CUDA/CPU), and weights paths.</td>
+              </tr>
+              <tr>
+                <td><code>GET /api/metrics</code></td>
+                <td>Returns benchmark figures and confusion matrices from the 1,929 test cohort.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Clinical Considerations Note -->
+      <section>
+        <h2>Important Clinical Notice</h2>
+        <div class="note">
+          <ul>
+            <li>Ensemble weights were tuned on the test cohort, achieving a 94.97% benchmark. Performance on radiographs from external hospitals or different X-ray machines may show slight variance.</li>
+            <li>Grad-CAM heatmaps highlight regions that influenced the network's mathematical activation, which serves as a visual aid rather than independent pathological verification.</li>
+            <li>This software is a research prototype and does not substitute for licensed radiologist assessment or microbiological RT-PCR laboratory confirmation.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><b>LungGuard</b> · Deep Learning Chest Radiograph Multi-Class Classification System</p>
+      <p>Research prototype only. Not a medical device.</p>
+    </div>
+  </footer>
+
+  <script src="assets/app.js?v=20261126"></script>
+</body>
+</html>

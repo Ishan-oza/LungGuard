@@ -1,0 +1,17 @@
+Accuracy: 0.9487
+
+Classification Report:
+              precision    recall  f1-score   support
+
+      NORMAL       0.89      0.97      0.93       332
+   PNEUMONIA       0.97      0.93      0.95       529
+     COVID19       0.96      0.95      0.96      1068
+
+    accuracy                           0.95      1929
+   macro avg       0.94      0.95      0.94      1929
+weighted avg       0.95      0.95      0.95      1929
+
+Confusion Matrix:
+[[ 321    5    6]
+ [   1  490   38]
+ [  37   12 1019]]

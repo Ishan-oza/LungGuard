@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Deep learning model weights (hosted externally on Google Drive)
+*.pth
+*.pt
+*.bin
+*.onnx
+*.weights
+*.h5
+*.hdf5
+models/*.pth
+cli/models/*.pth
+gui/models/*.pth
+gui/backend/models/*.pth
+
+# Logs and runtime output
+*.log
+app.log
+nohup.out
+
+# Operating system artifacts
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Backups
+*backup*
+chestvote_backup_safety/

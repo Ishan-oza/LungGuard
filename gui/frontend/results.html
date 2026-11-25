@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Results · LungGuard</title>
+  <meta name="description" content="Evaluation benchmarks of the LungGuard multi-class radiograph ensemble across 1,929 test scans.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css?v=20261126">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="wrap">
+      <a class="logo" href="index.html?v=20261126" aria-label="LungGuard Home">
+        <img src="assets/logo.svg" alt="LungGuard">
+        <span>LungGuard</span>
+      </a>
+      <ul>
+        <li><a class="l" href="index.html?v=20261126">Overview</a></li>
+        <li><a class="l" href="analyze.html?v=20261126">Analyze</a></li>
+        <li><a class="l" href="models.html?v=20261126">Models</a></li>
+        <li><a class="l on" href="results.html?v=20261126">Results</a></li>
+        <li><a class="l" href="method.html?v=20261126">Method</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="page-h">
+        <h1>Evaluation Benchmarks</h1>
+        <p class="lead">Performance figures evaluated on 1,929 unseen test radiographs: 332 COVID-19, 529 Normal, and 1,068 Pneumonia scans.</p>
+      </div>
+
+      <!-- Wide KPI Grid -->
+      <div class="stats">
+        <div class="stat">
+          <strong data-count="94.97">94.97%</strong>
+          <p>Overall Ensemble Accuracy (1,832 / 1,929 correct)</p>
+        </div>
+        <div class="stat">
+          <strong data-count="0.94">0.94</strong>
+          <p>Macro-averaged F1 Score across all three conditions</p>
+        </div>
+        <div class="stat">
+          <strong data-count="0.994">0.994</strong>
+          <p>Average ROC-AUC (COVID-19 0.995, Normal 0.996, Pneumonia 0.990)</p>
+        </div>
+      </div>
+
+      <!-- Confusion Matrix Section -->
+      <section>
+        <h2>Confusion Matrix Analysis</h2>
+        <p class="mute" style="margin-bottom:1.5rem;">Select an architecture to inspect distribution. Diagonal cells indicate true-positive diagnoses.</p>
+        
+        <div class="tabs" data-cm role="tablist">
+          <button data-k="ensemble" aria-selected="true">Ensemble (Weighted)</button>
+          <button data-k="resnet50" aria-selected="false">ResNet50</button>
+          <button data-k="vgg19" aria-selected="false">VGG19</button>
+          <button data-k="efficientnet_b1" aria-selected="false">EfficientNet-B1</button>
+          <button data-k="mobilenet_v2" aria-selected="false">MobileNetV2</button>
+        </div>
+
+        <div class="cmwrap">
+          <div id="cm" class="cm" aria-live="polite"></div>
+          <div>
+            <p class="mute" style="text-transform:uppercase; font-size:0.9rem; letter-spacing:0.04em;">Selected Model Accuracy</p>
+            <div class="big" id="cm-acc">94.97%</div>
+            <p style="margin-top:1.2rem; font-size:1.05rem;">
+              Gold-tinted diagonal cells indicate correct calls. The weighted soft-voting ensemble maintains an exceptional 97% recall rate on COVID-19, ensuring patient safety by minimizing false negatives.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Per-Condition Table -->
+      <section class="split">
+        <div>
+          <h2>Condition Diagnostic Scores</h2>
+          <p>
+            Precision reflects diagnostic certainty when a condition is flagged. Recall represents sensitivity across all positive cases in the cohort.
+          </p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Condition</th>
+              <th class="n">Precision</th>
+              <th class="n">Recall (Sensitivity)</th>
+              <th class="n">F1 Score</th>
+              <th class="n">ROC-AUC</th>
+              <th class="n">Test Scans</th>
+            </tr>
+          </thead>
+          <tbody id="pc"></tbody>
+        </table>
+      </section>
+
+      <!-- ROC Curves Plot -->
+      <section class="split">
+        <div>
+          <h2>Multi-Class Discriminative Separation</h2>
+          <p>
+            One-vs-Rest Receiver Operating Characteristic (ROC) curves illustrate the true-positive to false-positive trade-off across all decision thresholds. Curves near the upper-left boundary indicate superior discrimination.
+          </p>
+        </div>
+        <figure style="max-width:640px;">
+          <img src="assets/plots/roc_auc_curve.png" alt="Multi-class ROC curves for COVID-19, Normal, and Pneumonia">
+          <figcaption>One-vs-Rest ROC curves evaluated on the 1,929 test cohort.</figcaption>
+        </figure>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><b>LungGuard</b> · Deep Learning Chest Radiograph Multi-Class Classification System</p>
+      <p>Research prototype only. Not a medical device.</p>
+    </div>
+  </footer>
+
+  <script src="assets/app.js?v=20261126"></script>
+</body>
+</html>
